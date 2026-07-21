@@ -136,7 +136,10 @@
     <span class="dot"></span>
     <div>Tenis Skorbord<small>Kablosuz Kumanda</small></div>
   </div>
-  <a class="link-live" id="fsBtn" href="#" title="Tam ekran">⛶ Tam Ekran</a>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a class="link-live" id="installBtn" href="#" title="Uygulamayı yükle" style="display:none;background:var(--serve);color:#052a10;border-color:transparent;font-weight:700">⬇ Yükle</a>
+    <a class="link-live" id="fsBtn" href="#" title="Tam ekran">⛶ Tam Ekran</a>
+  </div>
 </header>
 
 <div class="board" id="board">
@@ -591,5 +594,21 @@ function syncUIFromCfg(){
 
 /* ---- başlat ---- */
 load(); adminLoad(); bindUI(); syncUIFromCfg(); render();
+
+/* --- PWA "Yükle" butonu --- */
+(function(){
+  var btn=E('installBtn'); if(!btn) return;
+  var dp=null;
+  window.addEventListener('beforeinstallprompt', function(ev){ ev.preventDefault(); dp=ev; btn.style.display=''; });
+  btn.addEventListener('click', function(ev){ ev.preventDefault();
+    if(dp){ dp.prompt(); dp.userChoice.then(function(){ dp=null; btn.style.display='none'; }); return; }
+    alert('Kurmak için: Chrome menüsü (⋮) → "Uygulamayı yükle".  iPhone/Safari: Paylaş → "Ana Ekrana Ekle".');
+  });
+  window.addEventListener('appinstalled', function(){ btn.style.display='none'; });
+  // iOS'ta beforeinstallprompt yok → butonu ipucu için göster
+  var isIos=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var standalone=(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
+  if(isIos && !standalone){ btn.textContent='⬇ Ana Ekrana'; btn.style.display=''; }
+})();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>

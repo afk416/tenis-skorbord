@@ -1,6 +1,6 @@
 // Tenis Skorbord — Service Worker (çevrimdışı + yüklenebilirlik)
-const CACHE = 'tenis-skor-v2';
-const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
+const CACHE = 'tenis-skor-v3';
+const ASSETS = ['./', './index.html', './manifest.json', './icon.svg', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
