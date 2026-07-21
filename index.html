@@ -455,9 +455,13 @@ function checkSet(i){
 function tbPoint(i){
   const a=S.p[i], b=S.p[1-i];
   a.tb++;
+  const total=a.tb+b.tb;                                   // TB'de oynanan toplam sayı
   if(a.tb>=S.cfg.tbTo && (a.tb-b.tb)>=2){
     a.games++; winSet(i);
-    if(!S.over){ S.server=1-S.server; if(S.cfg.changeover) doChangeEnds(); }   // TB seti bitti (13 oyun=tek) → taraf değiş
+    if(!S.over){ S.server=1-S.server; if(S.cfg.changeover) doChangeEnds(); }   // TB seti bitti (13 oyun=tek)
+  } else {
+    if(total%2===1) S.server=1-S.server;                  // servis sırası: 1. sayı sonrası, sonra her 2 sayıda değişir
+    if(S.cfg.changeover && total%6===0) doChangeEnds();   // saha değişimi: her 6 sayıda
   }
 }
 function winSet(i){
