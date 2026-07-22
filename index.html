@@ -57,6 +57,13 @@
   .board.over .winbar{display:flex}
   .wtrophy{font-size:15cqh;line-height:1}
   .wname{font-size:min(28cqh,18cqw);font-weight:800;line-height:1;max-width:94%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* TIE-BREAK etiketi (altta, set skorunun üstünde) — yalnız tie-break'te görünür */
+  .tbl{position:absolute;bottom:9.5cqh;left:0;right:0;text-align:center;font-size:6.5cqh;font-weight:800;
+       letter-spacing:.22em;line-height:1;color:#2bff57;display:none;z-index:2;text-shadow:0 0 6px rgba(43,255,87,.55)}
+  .board.tb .tbl{display:block}
+  /* alt maç/set skoru (küçük, ortada, en altta) */
+  .ms{position:absolute;bottom:1.5cqh;left:0;right:0;text-align:center;font-size:8cqh;font-weight:700;
+      line-height:1;color:#2bff57;opacity:.9;z-index:1;text-shadow:0 0 5px rgba(43,255,87,.4)}
 
   .legend{display:flex;justify-content:center;gap:16px;font-size:11px;color:var(--faint);margin:8px 2px 4px;flex-wrap:wrap}
   .legend b{color:var(--muted);font-weight:600}
@@ -129,6 +136,19 @@
   select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 11px;font-size:14px;font-family:inherit}
   footer{text-align:center;color:var(--faint);font-size:11px;margin-top:14px;line-height:1.6}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+  /* Dikeyde kolonlar normal blok (üst üste); yatayda yan yana → +Sayı butonları kaydırmadan görünür */
+  @media (orientation:landscape) and (max-height:600px){
+    body{max-width:1000px;padding:8px 16px calc(8px + var(--safe-b))}
+    header{margin-bottom:6px}
+    .wrap{display:flex;gap:18px;align-items:flex-start}
+    .col-a{flex:1.15;min-width:0}
+    .col-b{flex:1;min-width:0}
+    .col-a .board{max-width:min(100%,70vh);margin:0 auto}
+    .legend,footer{display:none}
+    .status{margin:6px 0 0}
+    .lockbar{margin-bottom:8px}
+  }
 </style>
 
 <header>
@@ -142,6 +162,8 @@
   </div>
 </header>
 
+<div class="wrap">
+<div class="col-a">
 <div class="board" id="board">
   <div class="net"></div>
   <div class="half half-l">
@@ -162,15 +184,18 @@
     <span class="wtrophy">🏆</span>
     <span class="wname" id="winName"></span>
   </div>
+  <div class="tbl" id="tbLabel">TIE-BREAK</div>
+  <div class="ms" id="msScore">0 - 0</div>
 </div>
 
 <div class="legend">
   <span>🎾 servis atan · <span class="sw"></span>servis/karşılama yönü (çapraz)</span>
-  <span><b>İç üst:</b> oyun · <b>Orta:</b> anlık sayı</span>
+  <span><b>İç üst:</b> oyun · <b>Orta:</b> anlık sayı · <b>Alt:</b> set skoru</span>
 </div>
 
 <div class="status" id="status">Maça hazır — dokunarak sayı ekle</div>
-
+</div>
+<div class="col-b">
 <div class="lockbar">
   <span class="lockstate off" id="lockState">🔒 İzleyici modu</span>
   <button class="lockbtn go" id="lockBtn" onclick="toggleAdmin()">Yönetici Girişi</button>
@@ -269,6 +294,8 @@
     </div>
   </div>
 </details>
+</div>
+</div>
 
 <footer>
   Bu ekran = ilerde cihazın telefona sunacağı kumanda.<br>
@@ -517,6 +544,9 @@ function render(){
 
   const board=E('board');
   board.classList.toggle('over',S.over);
+  board.classList.toggle('tb', tennis && S.inTB && !S.over);   // tie-break yazısı
+  E('msScore').textContent = A.sets + ' - ' + B.sets;           // alt: set (maç) skoru
+  E('msScore').style.display = tennis ? '' : 'none';
   if(S.over) E('winName').textContent=S.p[S.winner].name;
 
   // kumanda butonları
@@ -616,3 +646,4 @@ load(); adminLoad(); bindUI(); syncUIFromCfg(); render();
 })();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
+
