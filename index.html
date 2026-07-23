@@ -210,11 +210,11 @@
 <div class="status" id="status">Maça hazır — dokunarak sayı ekle</div>
 
 <div class="players">
-  <button class="pbtn pA" id="btnA" onclick="point(0)">
+  <button class="pbtn" id="btnA" onclick="point(0)">
     <span class="who"><span class="srv"></span><span class="nm2" id="btnNameA">oyuncu 1</span></span>
     <span class="plus">+</span>
   </button>
-  <button class="pbtn pB" id="btnB" onclick="point(1)">
+  <button class="pbtn" id="btnB" onclick="point(1)">
     <span class="who"><span class="srv"></span><span class="nm2" id="btnNameB">oyuncu 2</span></span>
     <span class="plus">+</span>
   </button>
@@ -391,17 +391,19 @@ const EMAILJS = { service:'', template:'', publicKey:'' };
 /* ================= DURUM ================= */
 const S = {
   cfg:{ mode:'tenis', setsToWin:2, gamesToWinSet:6, noAd:false, tiebreak:true, changeover:false, tbTo:7, pin:'1234', email:'', recoveryPin:'TENIS-4729', theme:'koyu' },
-  p:[ mkP('oyuncu 1'), mkP('oyuncu 2') ],
+  p:[ mkP('oyuncu 1',0), mkP('oyuncu 2',1) ],
   server:1, inTB:false, over:false, winner:null, lastPt:null,
   gamePts:0, setsLog:[], hist:[], admin:true,
 };
-function mkP(n){ return {name:n, sets:0, games:0, pts:0, tb:0}; }
+function mkP(n,id){ return {name:n, id:id, sets:0, games:0, pts:0, tb:0}; }
 
 /* ---- kalıcı kayıt + undo ---- */
 function save(){ try{ localStorage.setItem('tenisSkor2', JSON.stringify({cfg:S.cfg, m:snap()})); }catch(e){} }
 function snap(){ return {p:JSON.parse(JSON.stringify(S.p)), server:S.server, inTB:S.inTB, over:S.over, winner:S.winner, gamePts:S.gamePts, setsLog:JSON.parse(JSON.stringify(S.setsLog)), lastPt:S.lastPt}; }
 function restore(s){ S.p=s.p; S.server=s.server; S.inTB=s.inTB; S.over=s.over; S.winner=s.winner; S.gamePts=s.gamePts||0; S.setsLog=s.setsLog; S.lastPt=(s.lastPt===undefined?null:s.lastPt); }
-function load(){ try{ const raw=localStorage.getItem('tenisSkor2'); if(!raw) return; const o=JSON.parse(raw); if(o.cfg) Object.assign(S.cfg,o.cfg); if(o.m) restore(o.m); }catch(e){} }
+function load(){ try{ const raw=localStorage.getItem('tenisSkor2'); if(!raw) return; const o=JSON.parse(raw); if(o.cfg) Object.assign(S.cfg,o.cfg); if(o.m) restore(o.m); }catch(e){}
+  S.p.forEach((pl,i)=>{ if(pl.id===undefined) pl.id=i; });   // eski kayıt uyumu
+}
 function pushHist(){ S.hist.push(JSON.stringify(snap())); if(S.hist.length>400) S.hist.shift(); }
 function undo(){ if(!S.admin || !S.hist.length) return; restore(JSON.parse(S.hist.pop())); save(); render(); }
 
@@ -462,7 +464,7 @@ function sendRecoveryMail(){
 function point(i){
   if(!S.admin || S.over) return;
   pushHist();
-  S.lastPt=i;                                // son sayıyı alan (yeşil parıltı)
+  S.lastPt=S.p[i].id;                        // son sayıyı alan (kimlikle: taraf değişse de doğru kalır)
   if(S.cfg.mode==='basit'){ S.p[i].pts++; save(); render(); return; }
   S.gamePts++;                              // servis tarafı sayacı (çift=deuce, tek=ad)
   if(S.inTB) tbPoint(i); else gamePoint(i);
@@ -522,7 +524,7 @@ function swapSides(){ if(!S.admin) return; pushHist(); S.p.reverse(); S.server=1
 function newMatch(){
   if(!S.admin) return;
   const nA=S.p[0].name, nB=S.p[1].name;
-  S.p=[mkP(nA),mkP(nB)];
+  S.p=[mkP(nA,S.p[0].id),mkP(nB,S.p[1].id)];   // taraf/renk korunur
   S.server=1; S.inTB=false; S.over=false; S.winner=null; S.gamePts=0; S.setsLog=[]; S.hist=[]; S.lastPt=null;
   save(); render();
 }
@@ -568,8 +570,13 @@ function render(){
 
   // kumanda butonları
   E('btnNameA').textContent=A.name; E('btnNameB').textContent=B.name;
-  E('btnA').classList.toggle('lastpt', !S.over && S.lastPt===0);
-  E('btnB').classList.toggle('lastpt', !S.over && S.lastPt===1);
+  [0,1].forEach(function(k){                 // renk oyuncuyla birlikte taraf değiştirir
+    var b=E(k===0?'btnA':'btnB');
+    b.classList.toggle('pA', S.p[k].id===0);
+    b.classList.toggle('pB', S.p[k].id===1);
+  });
+  E('btnA').classList.toggle('lastpt', !S.over && S.lastPt===S.p[0].id);
+  E('btnB').classList.toggle('lastpt', !S.over && S.lastPt===S.p[1].id);
   E('btnA').classList.toggle('serving', tennis && !S.over && S.server===0);
   E('btnB').classList.toggle('serving', tennis && !S.over && S.server===1);
   E('undoBtn').disabled=S.hist.length===0;
