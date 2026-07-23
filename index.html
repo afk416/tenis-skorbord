@@ -109,7 +109,7 @@
   .pbtn .who{font-size:13px;font-weight:700;letter-spacing:.03em;display:flex;align-items:center;gap:7px;max-width:100%}
   .pbtn .who .nm2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .pbtn .plus{font-size:34px;font-weight:800;line-height:1}
-  .pbtn .sc{font-size:12px;color:var(--muted)}
+  .pA .plus{color:var(--a)} .pB .plus{color:var(--b)}
   .pbtn .srv{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
   .pbtn:active{background:var(--surface-2)}
   .pbtn.serving .srv{background:var(--serve);box-shadow:0 0 8px var(--serve)}
@@ -210,11 +210,11 @@
 <div class="status" id="status">Maça hazır — dokunarak sayı ekle</div>
 
 <div class="players">
-  <button class="pbtn" id="btnA" onclick="point(0)">
+  <button class="pbtn pA" id="btnA" onclick="point(0)">
     <span class="who"><span class="srv"></span><span class="nm2" id="btnNameA">oyuncu 1</span></span>
     <span class="plus">+</span>
   </button>
-  <button class="pbtn" id="btnB" onclick="point(1)">
+  <button class="pbtn pB" id="btnB" onclick="point(1)">
     <span class="who"><span class="srv"></span><span class="nm2" id="btnNameB">oyuncu 2</span></span>
     <span class="plus">+</span>
   </button>
