@@ -113,7 +113,8 @@
   }
   .pbtn.lastpt{animation:lastPulse 1.9s ease-in-out infinite}
 
-  .ctrls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+  .ctrls{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin-bottom:12px}
+  .ctrl.on{color:var(--serve-ink);border-color:var(--serve-ink)}
   .ctrl{border:1px solid var(--line);background:var(--surface-2);color:var(--txt);border-radius:12px;
     padding:11px 4px;font-size:11.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;
     transition:transform .06s,background .15s}
@@ -218,6 +219,10 @@
   <button class="ctrl" onclick="swapSides()">
     <svg viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="M16 21l4-4-4-4"/><path d="M20 17H4"/></svg>
     Taraf
+  </button>
+  <button class="ctrl" id="cornerBtn" onclick="toggleCorner()" style="display:none">
+    <svg viewBox="0 0 24 24"><path d="M3 8l4-4 4 4"/><path d="M7 4v16"/><path d="M13 16l4 4 4-4"/><path d="M17 20V4"/></svg>
+    Köşe
   </button>
   <button class="ctrl warn" onclick="askNewMatch()">
     <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/></svg>
@@ -378,15 +383,15 @@ const EMAILJS = { service:'', template:'', publicKey:'' };
 const S = {
   cfg:{ mode:'tenis', setsToWin:2, gamesToWinSet:6, noAd:false, tiebreak:true, changeover:false, tbTo:7, pin:'1234', email:'', recoveryPin:'TENIS-4729', theme:'koyu' },
   p:[ mkP('oyuncu 1',0), mkP('oyuncu 2',1) ],
-  server:1, inTB:false, over:false, winner:null, lastPt:null,
+  server:1, inTB:false, over:false, winner:null, lastPt:null, cornerFlip:false,
   gamePts:0, setsLog:[], hist:[], admin:true,
 };
 function mkP(n,id){ return {name:n, id:id, sets:0, games:0, pts:0, tb:0}; }
 
 /* ---- kalıcı kayıt + undo ---- */
 function save(){ try{ localStorage.setItem('tenisSkor2', JSON.stringify({cfg:S.cfg, m:snap()})); }catch(e){} }
-function snap(){ return {p:JSON.parse(JSON.stringify(S.p)), server:S.server, inTB:S.inTB, over:S.over, winner:S.winner, gamePts:S.gamePts, setsLog:JSON.parse(JSON.stringify(S.setsLog)), lastPt:S.lastPt}; }
-function restore(s){ S.p=s.p; S.server=s.server; S.inTB=s.inTB; S.over=s.over; S.winner=s.winner; S.gamePts=s.gamePts||0; S.setsLog=s.setsLog; S.lastPt=(s.lastPt===undefined?null:s.lastPt); }
+function snap(){ return {p:JSON.parse(JSON.stringify(S.p)), server:S.server, inTB:S.inTB, over:S.over, winner:S.winner, gamePts:S.gamePts, setsLog:JSON.parse(JSON.stringify(S.setsLog)), lastPt:S.lastPt, cornerFlip:S.cornerFlip}; }
+function restore(s){ S.p=s.p; S.server=s.server; S.inTB=s.inTB; S.over=s.over; S.winner=s.winner; S.gamePts=s.gamePts||0; S.setsLog=s.setsLog; S.lastPt=(s.lastPt===undefined?null:s.lastPt); S.cornerFlip=!!s.cornerFlip; }
 function load(){ try{ const raw=localStorage.getItem('tenisSkor2'); if(!raw) return; const o=JSON.parse(raw); if(o.cfg) Object.assign(S.cfg,o.cfg); if(o.m) restore(o.m); }catch(e){}
   S.p.forEach((pl,i)=>{ if(pl.id===undefined) pl.id=i; });   // eski kayıt uyumu
 }
@@ -454,6 +459,7 @@ function point(i){
   if(S.cfg.mode==='basit'){ S.p[i].pts++; save(); render(); return; }
   S.gamePts++;                              // servis tarafı sayacı (çift=deuce, tek=ad)
   if(S.inTB) tbPoint(i); else gamePoint(i);
+  S.cornerFlip=false;                        // köşe seçimi yalnız o sayı içindi
   save(); render();
 }
 function gamePoint(i){
@@ -507,11 +513,20 @@ function winSet(i){
 }
 function toggleServer(){ if(!S.admin || S.over) return; pushHist(); S.server=1-S.server; save(); render(); }
 function swapSides(){ if(!S.admin) return; pushHist(); S.p.reverse(); S.server=1-S.server; save(); render(); }
+/* Avantajda karşılayan hangi köşeden karşılayacağını seçer (yalnız o sayı için). */
+function atAdvantage(){
+  return S.cfg.mode==='tenis' && !S.cfg.noAd && !S.over && !S.inTB && (S.p[0].pts===4 || S.p[1].pts===4);
+}
+function toggleCorner(){
+  if(!S.admin || !atAdvantage()) return;
+  S.cornerFlip=!S.cornerFlip; save(); render();
+}
+
 function newMatch(){
   if(!S.admin) return;
   const nA=S.p[0].name, nB=S.p[1].name;
   S.p=[mkP(nA,S.p[0].id),mkP(nB,S.p[1].id)];   // taraf/renk korunur
-  S.server=1; S.inTB=false; S.over=false; S.winner=null; S.gamePts=0; S.setsLog=[]; S.hist=[]; S.lastPt=null;
+  S.server=1; S.inTB=false; S.over=false; S.winner=null; S.gamePts=0; S.setsLog=[]; S.hist=[]; S.lastPt=null; S.cornerFlip=false;
   save(); render();
 }
 function askNewMatch(){ if(!S.admin) return; askConfirm('Yeni maç başlasın mı? Mevcut skor sıfırlanacak.', newMatch); }
@@ -541,7 +556,7 @@ function render(){
   blkA.className='serve'; blkB.className='serve';
   E('ballA').className='ball'; E('ballB').className='ball';
   if(showSrv){
-    const deuce=S.gamePts%2===0;               // 0-0 (deuce) → sağ kutu
+    const deuce=(S.gamePts%2===0)!==S.cornerFlip;   // köşe butonu seçimi ters çevirir
     blkA.classList.add('on', deuce?'bottom':'top');   // sol oyuncu: deuce=alt(=sağ/deuce), ad=üst
     blkB.classList.add('on', deuce?'top':'bottom');   // sağ oyuncu: deuce=üst(=sağ/deuce), ad=alt
     (S.server===0?E('ballA'):E('ballB')).classList.add('on');
@@ -565,6 +580,9 @@ function render(){
     b.classList.toggle('pA', S.p[k].id===0);
     b.classList.toggle('pB', S.p[k].id===1);
   });
+  const cb=E('cornerBtn'), adv=atAdvantage();          // köşe butonu yalnız avantajda
+  cb.style.display = adv ? '' : 'none';
+  cb.classList.toggle('on', adv && S.cornerFlip);
   E('btnA').classList.toggle('lastpt', !S.over && S.lastPt===S.p[0].id);
   E('btnB').classList.toggle('lastpt', !S.over && S.lastPt===S.p[1].id);
   E('btnA').classList.toggle('serving', tennis && !S.over && S.server===0);
