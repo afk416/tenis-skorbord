@@ -38,7 +38,8 @@
     color:#2bff57;font-family:Arial,Helvetica,system-ui,sans-serif;
     box-shadow:0 12px 30px rgba(0,0,0,.5);margin-bottom:8px;
   }
-  .net{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#2bff57;opacity:.85;transform:translateX(-50%)}
+  /* file çizgisi alt skor/TIE-BREAK alanına inmez (17cqh üstünde biter) */
+  .net{position:absolute;top:0;bottom:17cqh;left:50%;width:3px;background:#2bff57;opacity:.85;transform:translateX(-50%)}
   .half{position:absolute;top:0;bottom:0;width:50%}
   .half-l{left:0} .half-r{right:0}
   .nm{position:absolute;top:3cqh;width:100%;text-align:center;font-size:min(12cqh,8cqw);font-weight:700;line-height:1;
@@ -137,17 +138,20 @@
   footer{text-align:center;color:var(--faint);font-size:11px;margin-top:14px;line-height:1.6}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
-  /* Dikeyde kolonlar normal blok (üst üste); yatayda yan yana → +Sayı butonları kaydırmadan görünür */
+  /* YATAY: skor tablosu yüksekliğin izin verdiği kadar BÜYÜK, +Sayı butonları altta
+     ince-uzun şeritler → ikisi de kaydırmadan ekrana sığar. (100vh - 118px) = board yüksekliği */
   @media (orientation:landscape) and (max-height:600px){
-    body{max-width:1000px;padding:8px 16px calc(8px + var(--safe-b))}
-    header{margin-bottom:6px}
-    .wrap{display:flex;gap:18px;align-items:flex-start}
-    .col-a{flex:1.15;min-width:0}
-    .col-b{flex:1;min-width:0}
-    .col-a .board{max-width:min(100%,70vh);margin:0 auto}
-    .legend,footer{display:none}
-    .status{margin:6px 0 0}
-    .lockbar{margin-bottom:8px}
+    body{max-width:680px;padding:6px 14px calc(6px + var(--safe-b))}
+    header{margin-bottom:5px}
+    .legend,.status,footer{display:none}
+    .board{max-width:calc((100vh - 118px) * 4 / 3);margin:0 auto 8px}
+    .players{gap:10px;margin-bottom:8px}
+    .pbtn{flex-direction:row;justify-content:space-between;align-items:center;gap:12px;padding:8px 15px;text-align:left}
+    .pbtn .plus{font-size:24px}
+    .pbtn .sc{font-size:11.5px}
+    .ctrls{margin-bottom:8px}
+    .ctrl{padding:8px 4px;font-size:11px;gap:3px}
+    .ctrl svg{width:16px;height:16px}
   }
 </style>
 
@@ -162,8 +166,6 @@
   </div>
 </header>
 
-<div class="wrap">
-<div class="col-a">
 <div class="board" id="board">
   <div class="net"></div>
   <div class="half half-l">
@@ -194,12 +196,6 @@
 </div>
 
 <div class="status" id="status">Maça hazır — dokunarak sayı ekle</div>
-</div>
-<div class="col-b">
-<div class="lockbar">
-  <span class="lockstate off" id="lockState">🔒 İzleyici modu</span>
-  <button class="lockbtn go" id="lockBtn" onclick="toggleAdmin()">Yönetici Girişi</button>
-</div>
 
 <div class="players">
   <button class="pbtn pA" id="btnA" onclick="point(0)">
@@ -294,7 +290,10 @@
     </div>
   </div>
 </details>
-</div>
+
+<div class="lockbar">
+  <span class="lockstate off" id="lockState">🔒 İzleyici modu</span>
+  <button class="lockbtn go" id="lockBtn" onclick="toggleAdmin()">Yönetici Girişi</button>
 </div>
 
 <footer>
