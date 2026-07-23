@@ -9,7 +9,7 @@
 <style>
   :root{
     --bg:#0b0f14; --bg2:#10161f; --surface:#141a22; --surface-2:#1b232d; --line:#26323f;
-    --txt:#e6edf3; --muted:#8296a8; --faint:#5b6b7c;
+    --txt:#e6edf3; --muted:#8296a8; --faint:#8a9cad;
     --a:#ff8a3d; --a-soft:rgba(255,138,61,.14);
     --b:#35c2ff; --b-soft:rgba(53,194,255,.14);
     --serve:#2bff57; --serve-ink:#2bff57; --gold:#ffd54a;
@@ -18,7 +18,7 @@
   /* AÇIK TEMA (ayarlardan seçilir). Skorbord LED yeşili SABİT — temadan etkilenmez. */
   html.light{
     --bg:#eef2f7; --bg2:#ffffff; --surface:#ffffff; --surface-2:#e9eff5; --line:#cfdae4;
-    --txt:#121c26; --muted:#56697a; --faint:#8496a6;
+    --txt:#121c26; --muted:#56697a; --faint:#5b6c7d;
     --a:#d9610b; --a-soft:rgba(217,97,11,.12);
     --b:#0b73ad; --b-soft:rgba(11,115,173,.12);
     --serve-ink:#0f8f31; --gold:#a8791a;
@@ -102,7 +102,7 @@
   .sendmail:active{background:rgba(43,255,87,.12)}
 
   .players{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-  .pbtn{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
+  .pbtn{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--txt);
     padding:14px 10px 16px;text-align:center;cursor:pointer;
     transition:transform .06s,background .15s;display:flex;flex-direction:column;gap:6px;align-items:center}
   .pbtn:active{transform:translateY(2px) scale(.99)}
@@ -111,9 +111,14 @@
   .pbtn .plus{font-size:34px;font-weight:800;line-height:1}
   .pbtn .sc{font-size:12px;color:var(--muted)}
   .pbtn .srv{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
-  .pA{border-top:3px solid var(--a)} .pA .plus{color:var(--a)} .pA:active{background:var(--a-soft)}
-  .pB{border-top:3px solid var(--b)} .pB .plus{color:var(--b)} .pB:active{background:var(--b-soft)}
+  .pbtn:active{background:var(--surface-2)}
   .pbtn.serving .srv{background:var(--serve);box-shadow:0 0 8px var(--serve)}
+  /* son sayıyı alan buton: hafif parıldayan yeşil çerçeve */
+  @keyframes lastPulse{
+    0%,100%{border-color:rgba(43,255,87,.45);box-shadow:0 0 0 0 rgba(43,255,87,.18)}
+    50%    {border-color:rgba(43,255,87,.95);box-shadow:0 0 13px 2px rgba(43,255,87,.38)}
+  }
+  .pbtn.lastpt{animation:lastPulse 1.9s ease-in-out infinite}
 
   .ctrls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
   .ctrl{border:1px solid var(--line);background:var(--surface-2);color:var(--txt);border-radius:12px;
@@ -144,7 +149,7 @@
   .hint b{color:var(--muted);font-weight:600}
   select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px 11px;font-size:14px;font-family:inherit}
   footer{text-align:center;color:var(--faint);font-size:11px;margin-top:14px;line-height:1.6}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
   /* YATAY: skor tablosu yüksekliğin izin verdiği kadar BÜYÜK, +Sayı butonları altta
      ince-uzun şeritler → ikisi de kaydırmadan ekrana sığar. (100vh - 118px) = board yüksekliği */
@@ -156,7 +161,6 @@
     .players{gap:10px;margin-bottom:8px}
     .pbtn{flex-direction:row;justify-content:space-between;align-items:center;gap:12px;padding:8px 15px;text-align:left}
     .pbtn .plus{font-size:24px}
-    .pbtn .sc{font-size:11.5px}
     .ctrls{margin-bottom:8px}
     .ctrl{padding:8px 4px;font-size:11px;gap:3px}
     .ctrl svg{width:16px;height:16px}
@@ -206,15 +210,13 @@
 <div class="status" id="status">Maça hazır — dokunarak sayı ekle</div>
 
 <div class="players">
-  <button class="pbtn pA" id="btnA" onclick="point(0)">
+  <button class="pbtn" id="btnA" onclick="point(0)">
     <span class="who"><span class="srv"></span><span class="nm2" id="btnNameA">oyuncu 1</span></span>
     <span class="plus">+</span>
-    <span class="sc" id="scA">0</span>
   </button>
-  <button class="pbtn pB" id="btnB" onclick="point(1)">
+  <button class="pbtn" id="btnB" onclick="point(1)">
     <span class="who"><span class="srv"></span><span class="nm2" id="btnNameB">oyuncu 2</span></span>
     <span class="plus">+</span>
-    <span class="sc" id="scB">0</span>
   </button>
 </div>
 
@@ -390,15 +392,15 @@ const EMAILJS = { service:'', template:'', publicKey:'' };
 const S = {
   cfg:{ mode:'tenis', setsToWin:2, gamesToWinSet:6, noAd:false, tiebreak:true, changeover:false, tbTo:7, pin:'1234', email:'', recoveryPin:'TENIS-4729', theme:'koyu' },
   p:[ mkP('oyuncu 1'), mkP('oyuncu 2') ],
-  server:1, inTB:false, over:false, winner:null,
+  server:1, inTB:false, over:false, winner:null, lastPt:null,
   gamePts:0, setsLog:[], hist:[], admin:true,
 };
 function mkP(n){ return {name:n, sets:0, games:0, pts:0, tb:0}; }
 
 /* ---- kalıcı kayıt + undo ---- */
 function save(){ try{ localStorage.setItem('tenisSkor2', JSON.stringify({cfg:S.cfg, m:snap()})); }catch(e){} }
-function snap(){ return {p:JSON.parse(JSON.stringify(S.p)), server:S.server, inTB:S.inTB, over:S.over, winner:S.winner, gamePts:S.gamePts, setsLog:JSON.parse(JSON.stringify(S.setsLog))}; }
-function restore(s){ S.p=s.p; S.server=s.server; S.inTB=s.inTB; S.over=s.over; S.winner=s.winner; S.gamePts=s.gamePts||0; S.setsLog=s.setsLog; }
+function snap(){ return {p:JSON.parse(JSON.stringify(S.p)), server:S.server, inTB:S.inTB, over:S.over, winner:S.winner, gamePts:S.gamePts, setsLog:JSON.parse(JSON.stringify(S.setsLog)), lastPt:S.lastPt}; }
+function restore(s){ S.p=s.p; S.server=s.server; S.inTB=s.inTB; S.over=s.over; S.winner=s.winner; S.gamePts=s.gamePts||0; S.setsLog=s.setsLog; S.lastPt=(s.lastPt===undefined?null:s.lastPt); }
 function load(){ try{ const raw=localStorage.getItem('tenisSkor2'); if(!raw) return; const o=JSON.parse(raw); if(o.cfg) Object.assign(S.cfg,o.cfg); if(o.m) restore(o.m); }catch(e){} }
 function pushHist(){ S.hist.push(JSON.stringify(snap())); if(S.hist.length>400) S.hist.shift(); }
 function undo(){ if(!S.admin || !S.hist.length) return; restore(JSON.parse(S.hist.pop())); save(); render(); }
@@ -460,6 +462,7 @@ function sendRecoveryMail(){
 function point(i){
   if(!S.admin || S.over) return;
   pushHist();
+  S.lastPt=i;                                // son sayıyı alan (yeşil parıltı)
   if(S.cfg.mode==='basit'){ S.p[i].pts++; save(); render(); return; }
   S.gamePts++;                              // servis tarafı sayacı (çift=deuce, tek=ad)
   if(S.inTB) tbPoint(i); else gamePoint(i);
@@ -520,7 +523,7 @@ function newMatch(){
   if(!S.admin) return;
   const nA=S.p[0].name, nB=S.p[1].name;
   S.p=[mkP(nA),mkP(nB)];
-  S.server=1; S.inTB=false; S.over=false; S.winner=null; S.gamePts=0; S.setsLog=[]; S.hist=[];
+  S.server=1; S.inTB=false; S.over=false; S.winner=null; S.gamePts=0; S.setsLog=[]; S.hist=[]; S.lastPt=null;
   save(); render();
 }
 function askNewMatch(){ if(!S.admin) return; askConfirm('Yeni maç başlasın mı? Mevcut skor sıfırlanacak.', newMatch); }
@@ -565,7 +568,8 @@ function render(){
 
   // kumanda butonları
   E('btnNameA').textContent=A.name; E('btnNameB').textContent=B.name;
-  E('scA').textContent=summaryLine(0); E('scB').textContent=summaryLine(1);
+  E('btnA').classList.toggle('lastpt', !S.over && S.lastPt===0);
+  E('btnB').classList.toggle('lastpt', !S.over && S.lastPt===1);
   E('btnA').classList.toggle('serving', tennis && !S.over && S.server===0);
   E('btnB').classList.toggle('serving', tennis && !S.over && S.server===1);
   E('undoBtn').disabled=S.hist.length===0;
@@ -591,10 +595,6 @@ function renderLock(){
   const pc=E('pinCfg'); if(pc) pc.disabled=locked;
   // maç bitince: +Sayı ve Servis pasif; Geri Al / Taraf / Yeni Maç aktif kalır
   if(S.over && S.admin){ E('btnA').disabled=true; E('btnB').disabled=true; E('srvBtn').disabled=true; }
-}
-function summaryLine(i){
-  if(S.cfg.mode==='basit') return 'Sayı: '+S.p[i].pts;
-  return 'Set '+S.p[i].sets+' · Oyun '+S.p[i].games+' · '+ptLabel(i);
 }
 
 /* ================= AYARLAR ================= */
