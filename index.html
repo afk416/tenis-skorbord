@@ -8,17 +8,25 @@
 <title>Tenis Skorbord — Kumanda</title>
 <style>
   :root{
-    --bg:#0b0f14; --surface:#141a22; --surface-2:#1b232d; --line:#26323f;
+    --bg:#0b0f14; --bg2:#10161f; --surface:#141a22; --surface-2:#1b232d; --line:#26323f;
     --txt:#e6edf3; --muted:#8296a8; --faint:#5b6b7c;
     --a:#ff8a3d; --a-soft:rgba(255,138,61,.14);
     --b:#35c2ff; --b-soft:rgba(53,194,255,.14);
-    --serve:#2bff57; --gold:#ffd54a;
+    --serve:#2bff57; --serve-ink:#2bff57; --gold:#ffd54a;
     --r:16px; --safe-b:env(safe-area-inset-bottom,0px);
+  }
+  /* AÇIK TEMA (ayarlardan seçilir). Skorbord LED yeşili SABİT — temadan etkilenmez. */
+  html.light{
+    --bg:#eef2f7; --bg2:#ffffff; --surface:#ffffff; --surface-2:#e9eff5; --line:#cfdae4;
+    --txt:#121c26; --muted:#56697a; --faint:#8496a6;
+    --a:#d9610b; --a-soft:rgba(217,97,11,.12);
+    --b:#0b73ad; --b-soft:rgba(11,115,173,.12);
+    --serve-ink:#0f8f31; --gold:#a8791a;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0}
   body{
-    background:radial-gradient(120% 80% at 50% -10%, #10161f 0%, var(--bg) 60%);
+    background:radial-gradient(120% 80% at 50% -10%, var(--bg2) 0%, var(--bg) 60%);
     color:var(--txt);
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     min-height:100dvh;-webkit-font-smoothing:antialiased;
@@ -47,7 +55,7 @@
   .gm{position:absolute;top:17cqh;font-size:min(15cqh,10cqw);font-weight:800;line-height:1;text-shadow:0 0 6px rgba(43,255,87,.45)}
   .half-l .gm{right:8%} .half-r .gm{left:8%}
   .pt{position:absolute;top:58%;left:50%;transform:translate(-50%,-50%);font-size:min(46cqh,28cqw);font-weight:800;line-height:1;text-shadow:0 0 10px rgba(43,255,87,.5)}
-  .serve{position:absolute;width:6%;height:38cqh;background:var(--serve);display:none;z-index:1;box-shadow:0 0 12px rgba(43,255,87,.4)}
+  .serve{position:absolute;width:6%;height:38cqh;background:#2bff57;display:none;z-index:1;box-shadow:0 0 12px rgba(43,255,87,.4)}
   .half-l .serve{left:0} .half-r .serve{right:0}
   .serve.top{top:24cqh} .serve.bottom{bottom:4cqh} .serve.on{display:block}
   .ball{position:absolute;top:16cqh;left:50%;transform:translateX(-50%);width:15cqh;height:15cqh;display:none;z-index:2}
@@ -75,7 +83,7 @@
 
   .lockbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px;margin-bottom:10px}
   .lockstate{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
-  .lockstate.on{color:var(--serve)} .lockstate.off{color:var(--muted)}
+  .lockstate.on{color:var(--serve-ink)} .lockstate.off{color:var(--muted)}
   .lockbtn{border:1px solid var(--line);background:var(--surface-2);color:var(--txt);border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
   .lockbtn.go{background:var(--serve);color:#052a10;border-color:transparent}
   .pbtn:disabled{opacity:.45;cursor:not-allowed}
@@ -90,7 +98,7 @@
   .modal-actions button{flex:1;border:1px solid var(--line);background:var(--surface-2);color:var(--txt);border-radius:10px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
   .modal-actions button.primary{background:var(--serve);color:#052a10;border-color:transparent}
   .forgot{background:none;border:0;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;padding:4px;font-family:inherit;align-self:center;width:100%}
-  .sendmail{width:100%;border:1px solid var(--serve);background:transparent;color:var(--serve);border-radius:10px;padding:11px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:4px}
+  .sendmail{width:100%;border:1px solid var(--serve-ink);background:transparent;color:var(--serve-ink);border-radius:10px;padding:11px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:4px}
   .sendmail:active{background:rgba(43,255,87,.12)}
 
   .players{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
@@ -102,7 +110,7 @@
   .pbtn .who .nm2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .pbtn .plus{font-size:34px;font-weight:800;line-height:1}
   .pbtn .sc{font-size:12px;color:var(--muted)}
-  .pbtn .srv{width:8px;height:8px;border-radius:50%;background:#2a3642;flex:none}
+  .pbtn .srv{width:8px;height:8px;border-radius:50%;background:var(--line);flex:none}
   .pA{border-top:3px solid var(--a)} .pA .plus{color:var(--a)} .pA:active{background:var(--a-soft)}
   .pB{border-top:3px solid var(--b)} .pB .plus{color:var(--b)} .pB:active{background:var(--b-soft)}
   .pbtn.serving .srv{background:var(--serve);box-shadow:0 0 8px var(--serve)}
@@ -111,7 +119,7 @@
   .ctrl{border:1px solid var(--line);background:var(--surface-2);color:var(--txt);border-radius:12px;
     padding:11px 4px;font-size:11.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;
     transition:transform .06s,background .15s}
-  .ctrl:active{transform:translateY(1px);background:#212b36}
+  .ctrl:active{transform:translateY(1px);background:var(--line)}
   .ctrl:disabled{opacity:.4;cursor:not-allowed}
   .ctrl svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .ctrl.warn{color:#ff7a7a}
@@ -237,6 +245,13 @@
       <div class="names">
         <input type="text" id="inA" maxlength="12" placeholder="oyuncu 1">
         <input type="text" id="inB" maxlength="12" placeholder="oyuncu 2">
+      </div>
+    </div>
+    <div class="field">
+      <label>Tema</label>
+      <div class="seg" id="segTheme">
+        <button data-v="koyu" aria-pressed="true">🌙 Koyu</button>
+        <button data-v="acik" aria-pressed="false">☀️ Açık</button>
       </div>
     </div>
     <div class="field">
@@ -373,7 +388,7 @@ const EMAILJS = { service:'', template:'', publicKey:'' };
 
 /* ================= DURUM ================= */
 const S = {
-  cfg:{ mode:'tenis', setsToWin:2, gamesToWinSet:6, noAd:false, tiebreak:true, changeover:false, tbTo:7, pin:'1234', email:'', recoveryPin:'TENIS-4729' },
+  cfg:{ mode:'tenis', setsToWin:2, gamesToWinSet:6, noAd:false, tiebreak:true, changeover:false, tbTo:7, pin:'1234', email:'', recoveryPin:'TENIS-4729', theme:'koyu' },
   p:[ mkP('oyuncu 1'), mkP('oyuncu 2') ],
   server:1, inTB:false, over:false, winner:null,
   gamePts:0, setsLog:[], hist:[], admin:true,
@@ -599,6 +614,7 @@ function bindUI(){
   const inA=E('inA'), inB=E('inB');
   inA.oninput=()=>{ S.p[0].name=inA.value||'oyuncu 1'; save(); render(); };
   inB.oninput=()=>{ S.p[1].name=inB.value||'oyuncu 2'; save(); render(); };
+  seg('segTheme', v=>{ S.cfg.theme=v; applyTheme(); });
   seg('segMode', v=>{ S.cfg.mode=v; E('tennisOpts').style.display=(v==='tenis'?'':'none'); });
   seg('segAd',   v=>{ S.cfg.noAd=(v==='noad'); });
   seg('segTb',   v=>{ S.cfg.tiebreak=(v==='on'); });
@@ -612,8 +628,16 @@ function bindUI(){
   E('newPin').addEventListener('keydown', e=>{ if(e.key==='Enter') saveNewPin(); });
   E('fsBtn').onclick=(e)=>{ e.preventDefault(); if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); };
 }
+/* açık/koyu tema uygula (skorbord LED yeşili sabit kalır) */
+function applyTheme(){
+  const light = S.cfg.theme==='acik';
+  document.documentElement.classList.toggle('light', light);
+  const m=document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute('content', light?'#eef2f7':'#0b0f14');
+}
 function syncUIFromCfg(){
   E('inA').value=S.p[0].name; E('inB').value=S.p[1].name;
+  segSet('segTheme', S.cfg.theme||'koyu');
   segSet('segMode', S.cfg.mode);
   segSet('segAd', S.cfg.noAd?'noad':'ad');
   segSet('segTb', S.cfg.tiebreak?'on':'off');
@@ -626,7 +650,7 @@ function syncUIFromCfg(){
 }
 
 /* ---- başlat ---- */
-load(); adminLoad(); bindUI(); syncUIFromCfg(); render();
+load(); adminLoad(); bindUI(); syncUIFromCfg(); applyTheme(); render();
 
 /* --- PWA "Yükle" butonu --- */
 (function(){
