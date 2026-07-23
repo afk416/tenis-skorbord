@@ -8,11 +8,11 @@
   </defs>
   <rect width="512" height="512" rx="115" fill="#ffffff"/>
 
-  <!-- SOL RAKET (mavi) -->
-  <g transform="rotate(-26 256 356)" fill="none" stroke="#2f80d6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- SOL RAKET (açık mavi) -->
+  <g transform="rotate(-26 256 356)" fill="none" stroke="#45b6e8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M212 234 Q244 298 256 304 Q268 298 300 234" stroke-width="22"/>
     <line x1="256" y1="298" x2="256" y2="448" stroke-width="24"/>
-    <line x1="256" y1="410" x2="256" y2="452" stroke-width="34" stroke="#255f9e"/>
+    <line x1="256" y1="410" x2="256" y2="452" stroke-width="34" stroke="#2b86bd"/>
     <ellipse cx="256" cy="150" rx="84" ry="106" fill="#ffffff" stroke-width="24"/>
     <g clip-path="url(#bedL)"><g transform="rotate(45 256 150)" stroke-width="3.2">
       <line x1="164" y1="44" x2="164" y2="256"/><line x1="184" y1="44" x2="184" y2="256"/><line x1="204" y1="44" x2="204" y2="256"/><line x1="224" y1="44" x2="224" y2="256"/><line x1="244" y1="44" x2="244" y2="256"/><line x1="264" y1="44" x2="264" y2="256"/><line x1="284" y1="44" x2="284" y2="256"/><line x1="304" y1="44" x2="304" y2="256"/><line x1="324" y1="44" x2="324" y2="256"/><line x1="344" y1="44" x2="344" y2="256"/>
@@ -20,11 +20,11 @@
     </g></g>
   </g>
 
-  <!-- SAĞ RAKET (turuncu) -->
-  <g transform="rotate(26 256 356)" fill="none" stroke="#f0821f" stroke-linecap="round" stroke-linejoin="round">
+  <!-- SAĞ RAKET (kırmızı) -->
+  <g transform="rotate(26 256 356)" fill="none" stroke="#e23b34" stroke-linecap="round" stroke-linejoin="round">
     <path d="M212 234 Q244 298 256 304 Q268 298 300 234" stroke-width="22"/>
     <line x1="256" y1="298" x2="256" y2="448" stroke-width="24"/>
-    <line x1="256" y1="410" x2="256" y2="452" stroke-width="34" stroke="#c4661a"/>
+    <line x1="256" y1="410" x2="256" y2="452" stroke-width="34" stroke="#b02a24"/>
     <ellipse cx="256" cy="150" rx="84" ry="106" fill="#ffffff" stroke-width="24"/>
     <g clip-path="url(#bedR)"><g transform="rotate(45 256 150)" stroke-width="3.2">
       <line x1="164" y1="44" x2="164" y2="256"/><line x1="184" y1="44" x2="184" y2="256"/><line x1="204" y1="44" x2="204" y2="256"/><line x1="224" y1="44" x2="224" y2="256"/><line x1="244" y1="44" x2="244" y2="256"/><line x1="264" y1="44" x2="264" y2="256"/><line x1="284" y1="44" x2="284" y2="256"/><line x1="304" y1="44" x2="304" y2="256"/><line x1="324" y1="44" x2="324" y2="256"/><line x1="344" y1="44" x2="344" y2="256"/>
@@ -32,11 +32,18 @@
     </g></g>
   </g>
 
-  <!-- TOP -->
+  <!-- RAKET İÇİ SKORLAR (dik) -->
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="800" text-anchor="middle">
+    <ellipse cx="166" cy="171" rx="45" ry="38" fill="#ffffff" opacity="0.85"/>
+    <text x="166" y="171" font-size="54" fill="#14567f" dominant-baseline="central">15</text>
+    <ellipse cx="346" cy="171" rx="45" ry="38" fill="#ffffff" opacity="0.85"/>
+    <text x="346" y="171" font-size="54" fill="#8f1f1a" dominant-baseline="central">30</text>
+  </g>
+
+  <!-- TOP (tek dalgalı dikiş) -->
   <g transform="translate(256 118)">
     <circle r="52" fill="url(#ball)" stroke="#5f8f22" stroke-width="3"/>
-    <path d="M-18 -48 C -40 -17, -40 17, -18 48" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-    <path d="M18 -48 C 40 -17, 40 17, 18 48" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-47 5 C -22 -24, 22 24, 47 -5" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
     <ellipse cx="-15" cy="-19" rx="16" ry="9" fill="#ffffff" opacity="0.30" transform="rotate(-28 -15 -19)"/>
   </g>
 </svg>
