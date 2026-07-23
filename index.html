@@ -66,10 +66,10 @@
   .board.over .winbar{display:flex}
   .wtrophy{font-size:15cqh;line-height:1}
   .wname{font-size:min(28cqh,18cqw);font-weight:800;line-height:1;max-width:94%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  /* TIE-BREAK etiketi (altta, set skorunun üstünde) — yalnız tie-break'te görünür */
+  /* alt skorun üstündeki etiket: normalde "SET SKORU", tie-break'te "TIE-BREAK" (vurgulu) */
   .tbl{position:absolute;bottom:9.5cqh;left:0;right:0;text-align:center;font-size:6.5cqh;font-weight:800;
-       letter-spacing:.22em;line-height:1;color:#2bff57;display:none;z-index:2;text-shadow:0 0 6px rgba(43,255,87,.55)}
-  .board.tb .tbl{display:block}
+       letter-spacing:.22em;line-height:1;color:#2bff57;opacity:.7;z-index:2;text-shadow:0 0 5px rgba(43,255,87,.4)}
+  .board.tb .tbl{opacity:1;text-shadow:0 0 7px rgba(43,255,87,.6)}
   /* alt maç/set skoru (küçük, ortada, en altta) */
   .ms{position:absolute;bottom:1.5cqh;left:0;right:0;text-align:center;font-size:8cqh;font-weight:700;
       line-height:1;color:#2bff57;opacity:.9;z-index:1;text-shadow:0 0 5px rgba(43,255,87,.4)}
@@ -198,7 +198,7 @@
     <span class="wtrophy">🏆</span>
     <span class="wname" id="winName"></span>
   </div>
-  <div class="tbl" id="tbLabel">TIE-BREAK</div>
+  <div class="tbl" id="tbLabel">SET SKORU</div>
   <div class="ms" id="msScore">0 - 0</div>
 </div>
 
@@ -563,7 +563,11 @@ function render(){
 
   const board=E('board');
   board.classList.toggle('over',S.over);
-  board.classList.toggle('tb', tennis && S.inTB && !S.over);   // tie-break yazısı
+  const tb = tennis && S.inTB && !S.over;
+  board.classList.toggle('tb', tb);
+  const tbl = E('tbLabel');                                     // alt skorun üstündeki etiket
+  tbl.textContent = tb ? 'TIE-BREAK' : 'SET SKORU';
+  tbl.style.display = tennis ? '' : 'none';
   E('msScore').textContent = A.sets + ' - ' + B.sets;           // alt: set (maç) skoru
   E('msScore').style.display = tennis ? '' : 'none';
   if(S.over) E('winName').textContent=S.p[S.winner].name;
