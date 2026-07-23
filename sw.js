@@ -1,8 +1,8 @@
 // Tenis Skorbord — Service Worker (çevrimdışı destekli + HEP GÜNCEL)
 // Strateji: sayfa/HTML için ÖNCE AĞ (çevrimiçiyken daima son sürüm), ağ yoksa önbellek.
 // Kurulumda HTTP cache baypas edilir ({cache:'reload'}) → bayat içerik cache'lenmez.
-const CACHE = 'tenis-skor-v19';
-const ASSETS = ['./', './index.html', './manifest.json', './icon.svg', './icon-mask.svg'];
+const CACHE = 'tenis-skor-v20';
+const ASSETS = ['./', './index.html', './manifest.json', './icon.svg', './icon-mask.svg', './icon-512.png', './icon-mask-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
