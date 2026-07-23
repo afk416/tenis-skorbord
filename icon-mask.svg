@@ -3,38 +3,37 @@
     <radialGradient id="ball" cx="38%" cy="32%" r="80%">
       <stop offset="0%" stop-color="#eaff8c"/><stop offset="55%" stop-color="#c2ee45"/><stop offset="100%" stop-color="#83bb2b"/>
     </radialGradient>
-    <clipPath id="bedL"><ellipse cx="256" cy="152" rx="70" ry="94"/></clipPath>
-    <clipPath id="bedR"><ellipse cx="256" cy="152" rx="70" ry="94"/></clipPath>
+    <clipPath id="bedL"><ellipse cx="256" cy="150" rx="66" ry="88"/></clipPath>
+    <clipPath id="bedR"><ellipse cx="256" cy="150" rx="66" ry="88"/></clipPath>
   </defs>
-
   <rect width="512" height="512" fill="#ffffff"/>
 
   <g transform="translate(256 256) scale(0.9) translate(-256 -256)">
-    <g transform="rotate(-27 256 350)">
-      <rect x="241" y="300" width="30" height="150" rx="9" fill="#2f80d6"/>
-      <rect x="237" y="410" width="38" height="52" rx="12" fill="#255f9e"/>
-      <path d="M256 250 L230 316 L282 316 Z" fill="#2f80d6"/>
-      <ellipse cx="256" cy="152" rx="86" ry="110" fill="#ffffff" stroke="#2f80d6" stroke-width="22"/>
-      <g clip-path="url(#bedL)"><g transform="rotate(45 256 152)" stroke="#2f80d6" stroke-width="3.4">
-        <line x1="160" y1="40" x2="160" y2="264"/><line x1="182" y1="40" x2="182" y2="264"/><line x1="204" y1="40" x2="204" y2="264"/><line x1="226" y1="40" x2="226" y2="264"/><line x1="248" y1="40" x2="248" y2="264"/><line x1="270" y1="40" x2="270" y2="264"/><line x1="292" y1="40" x2="292" y2="264"/><line x1="314" y1="40" x2="314" y2="264"/><line x1="336" y1="40" x2="336" y2="264"/><line x1="352" y1="40" x2="352" y2="264"/>
-        <line x1="144" y1="56" x2="368" y2="56"/><line x1="144" y1="78" x2="368" y2="78"/><line x1="144" y1="100" x2="368" y2="100"/><line x1="144" y1="122" x2="368" y2="122"/><line x1="144" y1="144" x2="368" y2="144"/><line x1="144" y1="166" x2="368" y2="166"/><line x1="144" y1="188" x2="368" y2="188"/><line x1="144" y1="210" x2="368" y2="210"/><line x1="144" y1="232" x2="368" y2="232"/><line x1="144" y1="248" x2="368" y2="248"/>
+    <g transform="rotate(-26 256 356)" fill="none" stroke="#2f80d6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M212 234 Q244 298 256 304 Q268 298 300 234" stroke-width="22"/>
+      <line x1="256" y1="298" x2="256" y2="448" stroke-width="24"/>
+      <line x1="256" y1="410" x2="256" y2="452" stroke-width="34" stroke="#255f9e"/>
+      <ellipse cx="256" cy="150" rx="84" ry="106" fill="#ffffff" stroke-width="24"/>
+      <g clip-path="url(#bedL)"><g transform="rotate(45 256 150)" stroke-width="3.2">
+        <line x1="164" y1="44" x2="164" y2="256"/><line x1="184" y1="44" x2="184" y2="256"/><line x1="204" y1="44" x2="204" y2="256"/><line x1="224" y1="44" x2="224" y2="256"/><line x1="244" y1="44" x2="244" y2="256"/><line x1="264" y1="44" x2="264" y2="256"/><line x1="284" y1="44" x2="284" y2="256"/><line x1="304" y1="44" x2="304" y2="256"/><line x1="324" y1="44" x2="324" y2="256"/><line x1="344" y1="44" x2="344" y2="256"/>
+        <line x1="152" y1="58" x2="360" y2="58"/><line x1="152" y1="78" x2="360" y2="78"/><line x1="152" y1="98" x2="360" y2="98"/><line x1="152" y1="118" x2="360" y2="118"/><line x1="152" y1="138" x2="360" y2="138"/><line x1="152" y1="158" x2="360" y2="158"/><line x1="152" y1="178" x2="360" y2="178"/><line x1="152" y1="198" x2="360" y2="198"/><line x1="152" y1="218" x2="360" y2="218"/><line x1="152" y1="238" x2="360" y2="238"/>
       </g></g>
     </g>
-    <g transform="rotate(27 256 350)">
-      <rect x="241" y="300" width="30" height="150" rx="9" fill="#f0821f"/>
-      <rect x="237" y="410" width="38" height="52" rx="12" fill="#c4661a"/>
-      <path d="M256 250 L230 316 L282 316 Z" fill="#f0821f"/>
-      <ellipse cx="256" cy="152" rx="86" ry="110" fill="#ffffff" stroke="#f0821f" stroke-width="22"/>
-      <g clip-path="url(#bedR)"><g transform="rotate(45 256 152)" stroke="#f0821f" stroke-width="3.4">
-        <line x1="160" y1="40" x2="160" y2="264"/><line x1="182" y1="40" x2="182" y2="264"/><line x1="204" y1="40" x2="204" y2="264"/><line x1="226" y1="40" x2="226" y2="264"/><line x1="248" y1="40" x2="248" y2="264"/><line x1="270" y1="40" x2="270" y2="264"/><line x1="292" y1="40" x2="292" y2="264"/><line x1="314" y1="40" x2="314" y2="264"/><line x1="336" y1="40" x2="336" y2="264"/><line x1="352" y1="40" x2="352" y2="264"/>
-        <line x1="144" y1="56" x2="368" y2="56"/><line x1="144" y1="78" x2="368" y2="78"/><line x1="144" y1="100" x2="368" y2="100"/><line x1="144" y1="122" x2="368" y2="122"/><line x1="144" y1="144" x2="368" y2="144"/><line x1="144" y1="166" x2="368" y2="166"/><line x1="144" y1="188" x2="368" y2="188"/><line x1="144" y1="210" x2="368" y2="210"/><line x1="144" y1="232" x2="368" y2="232"/><line x1="144" y1="248" x2="368" y2="248"/>
+    <g transform="rotate(26 256 356)" fill="none" stroke="#f0821f" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M212 234 Q244 298 256 304 Q268 298 300 234" stroke-width="22"/>
+      <line x1="256" y1="298" x2="256" y2="448" stroke-width="24"/>
+      <line x1="256" y1="410" x2="256" y2="452" stroke-width="34" stroke="#c4661a"/>
+      <ellipse cx="256" cy="150" rx="84" ry="106" fill="#ffffff" stroke-width="24"/>
+      <g clip-path="url(#bedR)"><g transform="rotate(45 256 150)" stroke-width="3.2">
+        <line x1="164" y1="44" x2="164" y2="256"/><line x1="184" y1="44" x2="184" y2="256"/><line x1="204" y1="44" x2="204" y2="256"/><line x1="224" y1="44" x2="224" y2="256"/><line x1="244" y1="44" x2="244" y2="256"/><line x1="264" y1="44" x2="264" y2="256"/><line x1="284" y1="44" x2="284" y2="256"/><line x1="304" y1="44" x2="304" y2="256"/><line x1="324" y1="44" x2="324" y2="256"/><line x1="344" y1="44" x2="344" y2="256"/>
+        <line x1="152" y1="58" x2="360" y2="58"/><line x1="152" y1="78" x2="360" y2="78"/><line x1="152" y1="98" x2="360" y2="98"/><line x1="152" y1="118" x2="360" y2="118"/><line x1="152" y1="138" x2="360" y2="138"/><line x1="152" y1="158" x2="360" y2="158"/><line x1="152" y1="178" x2="360" y2="178"/><line x1="152" y1="198" x2="360" y2="198"/><line x1="152" y1="218" x2="360" y2="218"/><line x1="152" y1="238" x2="360" y2="238"/>
       </g></g>
     </g>
-    <g transform="translate(256 116)">
-      <circle r="54" fill="url(#ball)" stroke="#5f8f22" stroke-width="3"/>
-      <path d="M-19 -50 C -42 -18, -42 18, -19 50" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-      <path d="M19 -50 C 42 -18, 42 18, 19 50" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-      <ellipse cx="-16" cy="-20" rx="17" ry="10" fill="#ffffff" opacity="0.30" transform="rotate(-28 -16 -20)"/>
+    <g transform="translate(256 118)">
+      <circle r="52" fill="url(#ball)" stroke="#5f8f22" stroke-width="3"/>
+      <path d="M-18 -48 C -40 -17, -40 17, -18 48" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+      <path d="M18 -48 C 40 -17, 40 17, 18 48" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+      <ellipse cx="-15" cy="-19" rx="16" ry="9" fill="#ffffff" opacity="0.30" transform="rotate(-28 -15 -19)"/>
     </g>
   </g>
 </svg>
